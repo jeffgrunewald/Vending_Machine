@@ -39,4 +39,16 @@ class VendingMachine
         end
     end
 
+    def select product
+
+    end
+
+    def check
+
+    end
+
+    def return
+
+    end
+
 end
