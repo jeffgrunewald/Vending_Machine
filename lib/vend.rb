@@ -19,20 +19,23 @@ class VendingMachine
 
     def insert coin
         case coin
-        when "nickel"
+        when "nickel", "dime", "quarter"
             self.valid_coins.push(coin)
-            self.current_amount += 0.05
-            self.nickels += 1
-        when "dime"
-            self.valid_coins.push(coin)
-            self.current_amount += 0.10
-            self.dimes += 1
-        when "quarter"
-            self.valid_coins.push(coin)
-            self.current_amount += 0.25
-            self.quarters += 1
+            case coin
+            when "nickel"
+                self.current_amount += 0.05
+                self.nickels += 1
+            when "dime"
+                self.current_amount += 0.10
+                self.dimes += 1
+            when "quarter"
+                self.current_amount += 0.25
+                self.quarters += 1
+            end
+            self.current_amount = self.current_amount.round(2)
+            puts("Current amount: #{self.current_amount}")
         else
-            puts("Returned " + coin)
+            puts("Returned #{coin}")
         end
     end
 

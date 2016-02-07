@@ -18,15 +18,22 @@ describe "Vending Machine" do
         expect(vendingMachine.candy).to be == {cost: 0.65, count: 20}
     end
 
-    it "should accept a nickel and reject a penny" do
+    it "should accept a nickel and a dime but reject a penny" do
+        expect(STDOUT).to receive(:puts).with("Current amount: 0.05")
         vendingMachine.insert("nickel")
         expect(vendingMachine.current_amount).to be == 0.05
         expect(vendingMachine.valid_coins).to be == ["nickel"]
         expect(vendingMachine.nickels).to be == 41
+        expect(output) == "Current amount: 0.05"
+        expect(STDOUT).to receive(:puts).with("Current amount: 0.15")
+        vendingMachine.insert("dime")
+        expect(vendingMachine.current_amount).to be == 0.15
+        expect(vendingMachine.valid_coins).to be == ["nickel", "dime"]
+        expect(vendingMachine.dimes).to be == 21
+        expect(STDOUT).to receive(:puts).with("Returned penny")
         vendingMachine.insert("penny")
-        expect(vendingMachine.current_amount).to be == 0.05
-        expect(vendingMachine.valid_coins).to be == ["nickel"]
-        expect(output) === "Returned penny"
+        expect(vendingMachine.current_amount).to be == 0.15
+        expect(vendingMachine.valid_coins).to be == ["nickel", "dime"]
     end
 
 end
