@@ -24,13 +24,10 @@ class VendingMachine
             case coin
             when "nickel"
                 self.current_amount += 0.05
-                self.nickels += 1
             when "dime"
                 self.current_amount += 0.10
-                self.dimes += 1
             when "quarter"
                 self.current_amount += 0.25
-                self.quarters += 1
             end
             self.current_amount = self.current_amount.round(2)
             puts("Current amount: #{self.current_amount}")
@@ -43,7 +40,7 @@ class VendingMachine
 
     end
 
-    def check
+    def display
 
     end
 
