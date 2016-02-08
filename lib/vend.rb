@@ -3,12 +3,11 @@
 
 class VendingMachine
     # Has accessors for valid coins and current amount.
-    attr_accessor :current_amount, :valid_coins, :invalid_coins, :nickels, :dimes, :quarters, :cola, :chips, :candy
+    attr_accessor :current_amount, :valid_coins, :nickels, :dimes, :quarters, :cola, :chips, :candy
 
     def initialize
         self.current_amount = 0
         self.valid_coins = []
-        self.invalid_coins = []
         self.nickels = 40
         self.dimes = 20
         self.quarters = 8
@@ -87,6 +86,8 @@ class VendingMachine
             end
             if dispense
                 puts "DISPENSED #{product}"
+                self.current_amount = 0
+                self.valid_coins = []
             end
         else
             puts("INVALID SELECTION")

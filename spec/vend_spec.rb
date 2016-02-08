@@ -92,4 +92,12 @@ describe "Vending Machine" do
         expect(vendingMachine.cola[:count]).to be == 19
     end
 
+    it "should empty the current amount and valid coins when a purchase is made" do
+        vendingMachine.valid_coins = ["QUARTER", "QUARTER"]
+        vendingMachine.current_amount = 50
+        vendingMachine.select("CHIPS")
+        expect(vendingMachine.current_amount).to be == 0
+        expect(vendingMachine.valid_coins).to be == []
+    end
+
 end
