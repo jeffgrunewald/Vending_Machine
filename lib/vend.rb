@@ -78,8 +78,11 @@ class VendingMachine
                     diff = self.current_amount - item[:cost]
                     # Update the specific product count
                     item[:count] -= 1
+                    # Prep product for return with array for possible change so both can be returned at once
+                    # similar to a real vending machine simultaneously dumping product in drop and change in tray
                     output = {product: product, change: []}
                     puts "THANK YOU"
+                    # Add coins inserted to overall total for each category
                     self.valid_coins.each do |coin|
                         if coin == "NICKEL"
                             self.nickels += 1
@@ -89,8 +92,13 @@ class VendingMachine
                             self.quarters += 1
                         end
                     end
+                    # Empty valid coins holding attribute for inserted coins, they belong to vendor now.
                     self.valid_coins = []
+                    # Zero out current amount; set for next transaction.
                     self.current_amount = 0
+                    # Make change, allowing for highest value coins first to reduce overall number of coins
+                    # in change, but allowing for more smaller coins if higher-value coins depleted.
+                    # Change pushed to array of change to be returned.
                     while diff >= 25 && self.quarters > 0
                         diff -= 25
                         self.quarters -= 1
@@ -106,6 +114,7 @@ class VendingMachine
                         self.nickels -= 1
                         output[:change].push "NICKEL"
                     end
+                    # Give the people what they want and their change.
                     return output
                 else
                     # Let them know they've come up short
@@ -116,11 +125,14 @@ class VendingMachine
                 puts "SOLD OUT"
             end
         else
+            # Catch all to allow any selection input
             puts "INVALID SELECTION"
         end
     end
 
+    # Allow customer to bail out.
     def return
+        # Holding variable to return coins while still emptying array.
         output = self.valid_coins
         self.valid_coins = []
         self.current_amount = 0
@@ -128,6 +140,7 @@ class VendingMachine
         return output
     end
 
+    # Allow vendor to restock machine and collect their money. Just resets values to defaults.
     def service
         self.current_amount = 0
         self.valid_coins = []
