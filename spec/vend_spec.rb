@@ -47,10 +47,10 @@ describe "Vending Machine" do
         end
 
         it "should reject invalid coins" do
-            expect(STDOUT).to receive(:puts).with("RETURNED PENNY")
             vendingMachine.insert("penny")
             expect(vendingMachine.current_amount).to be == 40
             expect(vendingMachine.valid_coins).to be == ["NICKEL", "DIME", "QUARTER"]
+            expect(vendingMachine.insert "penny").to eq("PENNY")
         end
     end
 
@@ -82,8 +82,7 @@ describe "Vending Machine" do
 
     it "should dispense selected product if current amount enough" do
         vendingMachine.current_amount = 65
-        expect(STDOUT).to receive(:puts).with("DISPENSED CANDY")
-        vendingMachine.select("CANDY")
+        expect(vendingMachine.select "CANDY").to eq("CANDY")
     end
 
     it "should subtract dispensed product from stock" do
@@ -98,6 +97,12 @@ describe "Vending Machine" do
         vendingMachine.select("CHIPS")
         expect(vendingMachine.current_amount).to be == 0
         expect(vendingMachine.valid_coins).to be == []
+    end
+
+    it "should thank the customer for a purchase" do
+        vendingMachine.current_amount = 100
+        expect(STDOUT).to receive(:puts).with("THANK YOU")
+        vendingMachine.select("COLA")
     end
 
 end

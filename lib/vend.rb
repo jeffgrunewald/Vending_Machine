@@ -31,7 +31,7 @@ class VendingMachine
             end
             self.display
         else
-            puts("RETURNED #{coin}")
+            return coin
         end
     end
 
@@ -85,9 +85,10 @@ class VendingMachine
                 end
             end
             if dispense
-                puts "DISPENSED #{product}"
+                puts "THANK YOU"
                 self.current_amount = 0
                 self.valid_coins = []
+                return product
             end
         else
             puts("INVALID SELECTION")
