@@ -66,7 +66,6 @@ describe "Vending Machine" do
     end
 
     context "when able to make change" do
-        vendingMachine = VendingMachine.new
 
         it "should display request to insert coin before accepting coins" do
             expect(STDOUT).to receive(:puts).with("INSERT COIN")
@@ -80,29 +79,37 @@ describe "Vending Machine" do
         end
     end
 
-    it "should dispense selected product if current amount enough" do
-        vendingMachine.current_amount = 65
-        expect(vendingMachine.select "CANDY").to eq("CANDY")
-    end
+    context "when transacting" do
+        before(:example) do
+            vendingMachine.current_amount = 100
+        end
 
-    it "should subtract dispensed product from stock" do
-        vendingMachine.current_amount = 100
-        vendingMachine.select("COLA")
-        expect(vendingMachine.cola[:count]).to be == 19
-    end
+        it "should dispense selected product if current amount enough" do
+            expect(vendingMachine.select "CANDY").to eq("CANDY")
+        end
 
-    it "should empty the current amount and valid coins when a purchase is made" do
-        vendingMachine.valid_coins = ["QUARTER", "QUARTER"]
-        vendingMachine.current_amount = 50
-        vendingMachine.select("CHIPS")
-        expect(vendingMachine.current_amount).to be == 0
-        expect(vendingMachine.valid_coins).to be == []
-    end
+        it "should subtract dispensed product from stock" do
+            vendingMachine.select("COLA")
+            expect(vendingMachine.cola[:count]).to be == 19
+        end
 
-    it "should thank the customer for a purchase" do
-        vendingMachine.current_amount = 100
-        expect(STDOUT).to receive(:puts).with("THANK YOU")
-        vendingMachine.select("COLA")
+        it "should empty the current amount and valid coins when a purchase is made" do
+            vendingMachine.valid_coins = ["QUARTER", "QUARTER"]
+            vendingMachine.select("CHIPS")
+            expect(vendingMachine.current_amount).to be == 0
+            expect(vendingMachine.valid_coins).to be == []
+        end
+
+        it "should thank the customer for a purchase" do
+            expect(STDOUT).to receive(:puts).with("THANK YOU")
+            vendingMachine.select("COLA")
+        end
+
+        it "should display sold out if selected item is unavailable" do
+            vendingMachine.cola[:count] = 0
+            expect(STDOUT).to receive(:puts).with("SOLD OUT")
+            vendingMachine.select("COLA")
+        end
     end
 
 end
