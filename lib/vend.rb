@@ -16,7 +16,7 @@ class VendingMachine
         coin = coin.upcase
         case coin
         when "NICKEL", "DIME", "QUARTER"
-            self.valid_coins.push(coin)
+            self.valid_coins.push coin
             case coin
             when "NICKEL"
                 self.current_amount += 5
