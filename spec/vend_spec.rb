@@ -74,14 +74,15 @@ describe "Vending Machine" do
         end
 
         it "should display the current amount entered once money has been inserted" do
-            ["quarter", "quarter", "quarter", "dime"].each do |coin|
-                vendingMachine.insert(coin)
-                $stdout.reopen('/dev/null', 'w')
-            end
+            vendingMachine.current_amount = 85
             expect(STDOUT).to receive(:puts).with("CURRENT AMOUNT: 0.85")
             vendingMachine.display
         end
+    end
 
+    it "should dispense selected product if current amount enough" do
+        expect(STDOUT).to receive(:puts).with("DISPENSED CANDY")
+        vendingMachine.select("CANDY")
     end
 
 end

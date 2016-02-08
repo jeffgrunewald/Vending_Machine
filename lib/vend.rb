@@ -36,10 +36,6 @@ class VendingMachine
         end
     end
 
-    def select product
-
-    end
-
     def display
         if self.current_amount > 0
             puts("CURRENT AMOUNT: #{"%.2f" % (self.current_amount / 100.0)}")
@@ -48,6 +44,17 @@ class VendingMachine
                 puts("EXACT CHANGE ONLY")
             else
                 puts("INSERT COIN")
+            end
+        end
+    end
+
+    def select product
+        product = product.upcase
+        case product
+        when "COLA", "CHIPS", "CANDY"
+            case product
+            when "CANDY"
+                puts("DISPENSED CANDY")
             end
         end
     end
