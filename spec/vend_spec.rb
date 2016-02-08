@@ -85,4 +85,9 @@ describe "Vending Machine" do
         vendingMachine.select("CANDY")
     end
 
+    it "should subtract dispensed product from stock" do
+        vendingMachine.select("COLA")
+        expect(vendingMachine.cola[:count]).to be == 19
+    end
+
 end

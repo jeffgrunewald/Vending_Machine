@@ -50,8 +50,38 @@ class VendingMachine
 
     def select product
         product = product.upcase
+        dispense = false
+        diff = 0
         if ["COLA", "CHIPS", "CANDY"].include? product
-            puts("DISPENSED #{product}")
+            case product
+            when "COLA"
+                if self.cola[:count] > 0
+                    if self.current_amount >= self.cola[:cost]
+                        diff = self.current_amount - self.cola[:cost]
+                        dispense = true
+                    end
+                else
+                    puts("SOLD OUT")
+                end
+            when "CHIPS"
+                if self.chips[:count] > 0
+                    if self.current_amount >= self.chips[:cost]
+                        diff = self.current_amount - self.chips[:cost]
+                        dispense = true
+                    end
+                else
+                    puts("SOLD OUT")
+                end
+            when "CANDY"
+                if self.candy[:count] > 0
+                    if self.current_amount >= self.candy[:cost]
+                        diff = self.current_amount - self.candy[:cost]
+                        dispense = true
+                    end
+                else
+                    puts("SOLD OUT")
+                end
+            end
         else
             puts("INVALID SELECTION")
         end
