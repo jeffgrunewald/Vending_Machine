@@ -5,6 +5,7 @@ class VendingMachine
     # Has accessors for valid coins and current amount.
     attr_accessor :current_amount, :valid_coins, :nickels, :dimes, :quarters, :cola, :chips, :candy
 
+    # Hnit function sets initial values for attributes, enough coins to make change and 20 items of each product
     def initialize
         self.current_amount = 0
         self.valid_coins = []
@@ -12,6 +13,11 @@ class VendingMachine
         self.cola, self.chips, self.candy = [({cost: 100, count: 20}), ({cost: 50, count: 20}), ({cost: 65, count: 20})]
     end
 
+    # Coin interaction implemented as a method, representing dropping coins in the slot.
+    # Convert coins inserted to upcase so "dime" and "DIME" treated the same; used upcase and not downcase because
+    # specified output in all caps (for consistency). Calls display method (next) and returns invalid coins instead
+    # of displaying them, simulating real machine dropping real invalid coin in coin return.
+    # Anything can be entered, so treats any input not one of the three valid coins as an invalid coin.
     def insert coin
         coin = coin.upcase
         case coin
@@ -31,10 +37,15 @@ class VendingMachine
         end
     end
 
+    # Display method for user interaction, instruction.
     def display
         if self.current_amount > 0
+            # Implmented money as int representing pennies and then format as cents/dollar because trying
+            # to add/subtract floats is maddening.
             puts("CURRENT AMOUNT: #{"%.2f" % (self.current_amount / 100.0)}")
         else
+            # Lowest coin levels to determine if exact change required determined by one coin less than needed
+            # to equal next "value threshold". Ex: 3 quarters = 1 less than 1.00, 4 dimes = 1 less than 0.50, etc.
             if self.nickels <= 4 && self.dimes <= 4 && self.quarters <= 3
                 puts "EXACT CHANGE ONLY"
             else
@@ -43,48 +54,42 @@ class VendingMachine
         end
     end
 
+    # The big one - processes transactions based on user selection. Takes any input selection and treats any
+    # not conforming to one three products as "invalid selection".
     def select product
+        # Takes input and converts to upcase for consistency (again, just to conform to other specified output)
         product = product.upcase
+        # Boolean to simplify processing; allows for single "output product and change" block when conditions
+        # for individual items must be processed separately.
         dispense = false
+        # Diff to calculate leftovers if customer adds more money than needed.
         diff = 0
         if ["COLA", "CHIPS", "CANDY"].include? product
             case product
             when "COLA"
-                if self.cola[:count] > 0
-                    if self.current_amount >= self.cola[:cost]
-                        diff = self.current_amount - self.cola[:cost]
-                        dispense = true
-                        self.cola[:count] -= 1
-                    else
-                        puts "PRICE: #{"%.2f" % (self.cola[:cost] / 100.0)}"
-                    end
-                else
-                    puts "SOLD OUT"
-                end
+                item = self.cola
             when "CHIPS"
-                if self.chips[:count] > 0
-                    if self.current_amount >= self.chips[:cost]
-                        diff = self.current_amount - self.chips[:cost]
-                        dispense = true
-                        self.chips[:count] -= 1
-                    else
-                        puts "PRICE: #{"%.2f" % (self.chips[:cost] / 100.0)}"
-                    end
-                else
-                    puts "SOLD OUT"
-                end
+                item = self.chips
             when "CANDY"
-                if self.candy[:count] > 0
-                    if self.current_amount >= self.candy[:cost]
-                        diff = self.current_amount - self.candy[:cost]
-                        dispense = true
-                        self.candy[:count] -= 1
-                    else
-                        puts "PRICE: #{"%.2f" % (self.candy[:cost] / 100.0)}"
-                    end
+                item = self.candy
+            end
+            # As long as there is any product left from select option...
+            if item[:count] > 0
+                # And you've entered enough money
+                if self.current_amount >= item[:cost]
+                    # Store the amount of overage, if any
+                    diff = self.current_amount - item[:cost]
+                    # Approve the transaction for later
+                    dispense = true
+                    # Update the specific product count
+                    item[:count] -= 1
                 else
-                    puts "SOLD OUT"
+                    # Let them know they've come up short
+                    puts "PRICE: #{"%.2f" % (item[:cost] / 100.0)}"
                 end
+            else
+                # Skip all that if the product isn't available
+                puts "SOLD OUT"
             end
             if dispense
                 output = {product: product, change: []}
@@ -126,7 +131,7 @@ class VendingMachine
         output = self.valid_coins
         self.valid_coins = []
         self.current_amount = 0
-        puts "INSERT COIN"
+        self.display
         return output
     end
 
