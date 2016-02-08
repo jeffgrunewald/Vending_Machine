@@ -62,7 +62,7 @@ class VendingMachine
                         self.cola[:count] -= 1
                     end
                 else
-                    puts("SOLD OUT")
+                    puts "SOLD OUT"
                 end
             when "CHIPS"
                 if self.chips[:count] > 0
@@ -72,7 +72,7 @@ class VendingMachine
                         self.chips[:count] -= 1
                     end
                 else
-                    puts("SOLD OUT")
+                    puts "SOLD OUT"
                 end
             when "CANDY"
                 if self.candy[:count] > 0
@@ -82,8 +82,11 @@ class VendingMachine
                         self.candy[:count] -= 1
                     end
                 else
-                    puts("SOLD OUT")
+                    puts "SOLD OUT"
                 end
+            end
+            if dispense
+                puts "DISPENSED #{product}"
             end
         else
             puts("INVALID SELECTION")

@@ -81,6 +81,7 @@ describe "Vending Machine" do
     end
 
     it "should dispense selected product if current amount enough" do
+        vendingMachine.current_amount = 65
         expect(STDOUT).to receive(:puts).with("DISPENSED CANDY")
         vendingMachine.select("CANDY")
     end
