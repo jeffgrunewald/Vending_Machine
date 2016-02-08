@@ -59,6 +59,7 @@ class VendingMachine
                     if self.current_amount >= self.cola[:cost]
                         diff = self.current_amount - self.cola[:cost]
                         dispense = true
+                        self.cola[:count] -= 1
                     end
                 else
                     puts("SOLD OUT")
@@ -68,6 +69,7 @@ class VendingMachine
                     if self.current_amount >= self.chips[:cost]
                         diff = self.current_amount - self.chips[:cost]
                         dispense = true
+                        self.chips[:count] -= 1
                     end
                 else
                     puts("SOLD OUT")
@@ -77,6 +79,7 @@ class VendingMachine
                     if self.current_amount >= self.candy[:cost]
                         diff = self.current_amount - self.candy[:cost]
                         dispense = true
+                        self.candy[:count] -= 1
                     end
                 else
                     puts("SOLD OUT")

@@ -86,6 +86,7 @@ describe "Vending Machine" do
     end
 
     it "should subtract dispensed product from stock" do
+        vendingMachine.current_amount = 100
         vendingMachine.select("COLA")
         expect(vendingMachine.cola[:count]).to be == 19
     end
