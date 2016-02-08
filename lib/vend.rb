@@ -50,12 +50,10 @@ class VendingMachine
 
     def select product
         product = product.upcase
-        case product
-        when "COLA", "CHIPS", "CANDY"
-            case product
-            when "CANDY"
-                puts("DISPENSED CANDY")
-            end
+        if ["COLA", "CHIPS", "CANDY"].include? product
+            puts("DISPENSED #{product}")
+        else
+            puts("INVALID SELECTION")
         end
     end
 
