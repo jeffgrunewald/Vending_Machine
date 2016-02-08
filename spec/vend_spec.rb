@@ -18,7 +18,7 @@ describe "Vending Machine" do
         is_expected.to respond_to :display
     end
 
-    context "with a new machine" do
+    context "a new machine" do
         vendingMachine = VendingMachine.new
 
         it "should initialize attribute values representing a full machine ready to make change" do
@@ -29,24 +29,41 @@ describe "Vending Machine" do
         end
 
         it "should accept valid coins and update attributes" do
-            expect(STDOUT).to receive(:puts).with("Current amount: 0.05")
-            vendingMachine.insert("nickel")
+            expect(STDOUT).to receive(:puts).with("CURRENT AMOUNT: 0.05")
+            vendingMachine.insert("NICKEL")
             expect(vendingMachine.current_amount).to be == 0.05
-            expect(vendingMachine.valid_coins).to be == ["nickel"]
-            expect(STDOUT).to receive(:puts).with("Current amount: 0.15")
-            vendingMachine.insert("dime")
+            expect(vendingMachine.valid_coins).to be == ["NICKEL"]
+            expect(STDOUT).to receive(:puts).with("CURRENT AMOUNT: 0.15")
+            vendingMachine.insert("DIME")
             expect(vendingMachine.current_amount).to be == 0.15
-            expect(vendingMachine.valid_coins).to be == ["nickel", "dime"]
+            expect(vendingMachine.valid_coins).to be == ["NICKEL", "DIME"]
+        end
+
+        it "should accept correct coins regardless of their input case" do
+            vendingMachine.insert("quarter")
+            expect(vendingMachine.current_amount).to be == 0.40
+            expect(vendingMachine.valid_coins).to be == ["NICKEL", "DIME", "QUARTER"]
         end
 
         it "should reject invalid coins" do
-            expect(STDOUT).to receive(:puts).with("Returned penny")
+            expect(STDOUT).to receive(:puts).with("RETURNED PENNY")
             vendingMachine.insert("penny")
-            expect(vendingMachine.current_amount).to be == 0.15
-            expect(vendingMachine.valid_coins).to be == ["nickel", "dime"]
+            expect(vendingMachine.current_amount).to be == 0.40
+            expect(vendingMachine.valid_coins).to be == ["NICKEL", "DIME", "QUARTER"]
         end
     end
 
-    context "with a "
+    context "a change-depleted machine" do
+        vendingMachine = VendingMachine.new
+        vendingMachine.nickels = 4
+        vendingMachine.dimes = 4
+        vendingMachine.quarters = 3
+
+        it "should display requirement for exact change only when coin bins are low" do
+            expect(STDOUT).to receive(:puts).with("EXACT CHANGE ONLY")
+            vendingMachine.display
+        end
+
+    end
 
 end
