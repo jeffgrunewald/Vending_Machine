@@ -21,7 +21,7 @@ describe "Vending Machine" do
     context "when newly serviced" do
         vendingMachine = VendingMachine.new
 
-        it "should initialize attribute values representing a full machine ready to make change" do
+        it "should initialize attributes representing a fully-stocked machine" do
             expect(vendingMachine.current_amount).to be == 0
             expect(vendingMachine.valid_coins).to be == []
             expect(vendingMachine.nickels).to be == 40
@@ -59,7 +59,7 @@ describe "Vending Machine" do
 
         vendingMachine.nickels, vendingMachine.dimes, vendingMachine.quarters = [4, 4, 3]
 
-        it "should display requirement for exact change only when coin bins are low" do
+        it "should display requirement for exact change only before accepting coins" do
             expect(STDOUT).to receive(:puts).with("EXACT CHANGE ONLY")
             vendingMachine.display
         end
@@ -68,7 +68,7 @@ describe "Vending Machine" do
     context "when able to make change" do
         vendingMachine = VendingMachine.new
 
-        it "should display request to insert coin when it is able to make change" do
+        it "should display request to insert coin before accepting coins" do
             expect(STDOUT).to receive(:puts).with("INSERT COIN")
             vendingMachine.display
         end
