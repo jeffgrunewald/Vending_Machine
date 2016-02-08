@@ -122,6 +122,12 @@ describe "Vending Machine" do
         it "should return change if any is left over after purchase" do
             expect(vendingMachine.select "CANDY").to eq({product: "CANDY", change: ["QUARTER", "DIME"]})
         end
+
+        it "should re-display the price of an item when current amount is not enough" do
+            vendingMachine.current_amount = 50
+            expect(STDOUT).to receive(:puts).with("PRICE: 0.65")
+            vendingMachine.select("CANDY")
+        end
     end
 
 end

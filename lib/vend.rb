@@ -59,6 +59,8 @@ class VendingMachine
                         diff = self.current_amount - self.cola[:cost]
                         dispense = true
                         self.cola[:count] -= 1
+                    else
+                        puts "PRICE: #{"%.2f" % (self.cola[:cost] / 100.0)}"
                     end
                 else
                     puts "SOLD OUT"
@@ -69,6 +71,8 @@ class VendingMachine
                         diff = self.current_amount - self.chips[:cost]
                         dispense = true
                         self.chips[:count] -= 1
+                    else
+                        puts "PRICE: #{"%.2f" % (self.chips[:cost] / 100.0)}"
                     end
                 else
                     puts "SOLD OUT"
@@ -79,6 +83,8 @@ class VendingMachine
                         diff = self.current_amount - self.candy[:cost]
                         dispense = true
                         self.candy[:count] -= 1
+                    else
+                        puts "PRICE: #{"%.2f" % (self.candy[:cost] / 100.0)}"
                     end
                 else
                     puts "SOLD OUT"
