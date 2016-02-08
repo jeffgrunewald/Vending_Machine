@@ -12,9 +12,9 @@ class VendingMachine
         self.nickels = 40
         self.dimes = 20
         self.quarters = 8
-        self.cola = {cost: 1.00, count: 20}
-        self.chips = {cost: 0.50, count: 20}
-        self.candy = {cost: 0.65, count: 20}
+        self.cola = {cost: 100, count: 20}
+        self.chips = {cost: 50, count: 20}
+        self.candy = {cost: 65, count: 20}
     end
 
     def insert coin
@@ -24,14 +24,13 @@ class VendingMachine
             self.valid_coins.push(coin)
             case coin
             when "NICKEL"
-                self.current_amount += 0.05
+                self.current_amount += 5
             when "DIME"
-                self.current_amount += 0.10
+                self.current_amount += 10
             when "QUARTER"
-                self.current_amount += 0.25
+                self.current_amount += 25
             end
-            self.current_amount = self.current_amount.round(2)
-            puts("CURRENT AMOUNT: #{self.current_amount}")
+            self.display
         else
             puts("RETURNED #{coin}")
         end
@@ -43,7 +42,7 @@ class VendingMachine
 
     def display
         if self.current_amount > 0
-            puts("CURRENT AMOUNT: #{self.current_amount}")
+            puts("CURRENT AMOUNT: #{"%.2f" % (self.current_amount / 100.0)}")
         else
             if self.nickels <= 4 && self.dimes <= 4 && self.quarters <= 3
                 puts("EXACT CHANGE ONLY")
