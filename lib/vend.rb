@@ -85,10 +85,20 @@ class VendingMachine
                 end
             end
             if dispense
+                output = {product: product, change: []}
                 puts "THANK YOU"
-                self.current_amount = 0
+                self.valid_coins.each do |coin|
+                    if coin == "NICKEL"
+                        self.nickels += 1
+                    elsif coin == "DIME"
+                        self.dimes += 1
+                    elsif coin == "QUARTER"
+                        self.quarters += 1
+                    end
+                end
                 self.valid_coins = []
-                return product
+                self.current_amount = 0
+                return output
             end
         else
             puts("INVALID SELECTION")

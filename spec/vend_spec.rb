@@ -85,7 +85,7 @@ describe "Vending Machine" do
         end
 
         it "should dispense selected product if current amount enough" do
-            expect(vendingMachine.select "CANDY").to eq("CANDY")
+            expect(vendingMachine.select "CANDY").to eq({product: "CANDY", change: []})
         end
 
         it "should subtract dispensed product from stock" do
@@ -109,6 +109,12 @@ describe "Vending Machine" do
             vendingMachine.cola[:count] = 0
             expect(STDOUT).to receive(:puts).with("SOLD OUT")
             vendingMachine.select("COLA")
+        end
+
+        it "should deposit input coins properly" do
+            vendingMachine.valid_coins = ["QUARTER", "QUARTER"]
+            vendingMachine.select("CHIPS")
+            expect(vendingMachine.quarters).to be == 10
         end
     end
 
