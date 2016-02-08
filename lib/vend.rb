@@ -8,12 +8,8 @@ class VendingMachine
     def initialize
         self.current_amount = 0
         self.valid_coins = []
-        self.nickels = 40
-        self.dimes = 20
-        self.quarters = 8
-        self.cola = {cost: 100, count: 20}
-        self.chips = {cost: 50, count: 20}
-        self.candy = {cost: 65, count: 20}
+        self.nickels, self.dimes, self.quarters = [40, 20, 8]
+        self.cola, self.chips, self.candy = [({cost: 100, count: 20}), ({cost: 50, count: 20}), ({cost: 65, count: 20})]
     end
 
     def insert coin
@@ -40,9 +36,9 @@ class VendingMachine
             puts("CURRENT AMOUNT: #{"%.2f" % (self.current_amount / 100.0)}")
         else
             if self.nickels <= 4 && self.dimes <= 4 && self.quarters <= 3
-                puts("EXACT CHANGE ONLY")
+                puts "EXACT CHANGE ONLY"
             else
-                puts("INSERT COIN")
+                puts "INSERT COIN"
             end
         end
     end
@@ -107,27 +103,38 @@ class VendingMachine
                 while diff >= 25 && self.quarters > 0
                     diff -= 25
                     self.quarters -= 1
-                    output[:change].push("QUARTER")
+                    output[:change].push "QUARTER"
                 end
                 while diff >= 10 && self.dimes > 0
                     diff -= 10
                     self.dimes -= 1
-                    output[:change].push("DIME")
+                    output[:change].push "DIME"
                 end
                 while diff >= 5 && self.nickels > 0
                     diff -= 5
                     self.nickels -= 1
-                    output[:change].push("NICKEL")
+                    output[:change].push "NICKEL"
                 end
                 return output
             end
         else
-            puts("INVALID SELECTION")
+            puts "INVALID SELECTION"
         end
     end
 
     def return
+        output = self.valid_coins
+        self.valid_coins = []
+        self.current_amount = 0
+        puts "INSERT COIN"
+        return output
+    end
 
+    def service
+        self.current_amount = 0
+        self.valid_coins = []
+        self.cola[:count], self.candy[:count], self.chips[:count] = [20, 20, 20]
+        self.nickels, self.dimes, self.quarters = [40, 20, 8]
     end
 
 end
