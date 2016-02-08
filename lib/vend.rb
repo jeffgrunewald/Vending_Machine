@@ -98,6 +98,21 @@ class VendingMachine
                 end
                 self.valid_coins = []
                 self.current_amount = 0
+                while diff >= 25 && self.quarters > 0
+                    diff -= 25
+                    self.quarters -= 1
+                    output[:change].push("QUARTER")
+                end
+                while diff >= 10 && self.dimes > 0
+                    diff -= 10
+                    self.dimes -= 1
+                    output[:change].push("DIME")
+                end
+                while diff >= 5 && self.nickels > 0
+                    diff -= 5
+                    self.nickels -= 1
+                    output[:change].push("NICKEL")
+                end
                 return output
             end
         else
