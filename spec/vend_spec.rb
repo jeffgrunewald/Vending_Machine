@@ -18,7 +18,7 @@ describe "Vending Machine" do
         is_expected.to respond_to :display
     end
 
-    context "a new machine" do
+    context "when newly serviced" do
         vendingMachine = VendingMachine.new
 
         it "should initialize attribute values representing a full machine ready to make change" do
@@ -40,6 +40,7 @@ describe "Vending Machine" do
         end
 
         it "should accept correct coins regardless of their input case" do
+            expect(STDOUT).to receive(:puts).with("CURRENT AMOUNT: 0.40")
             vendingMachine.insert("quarter")
             expect(vendingMachine.current_amount).to be == 40
             expect(vendingMachine.valid_coins).to be == ["NICKEL", "DIME", "QUARTER"]
@@ -53,18 +54,33 @@ describe "Vending Machine" do
         end
     end
 
-    context "a change-depleted machine" do
+    context "with depleted coin bins" do
         vendingMachine = VendingMachine.new
-        vendingMachine.nickels = 4
-        vendingMachine.dimes = 4
-        vendingMachine.quarters = 3
+
+        vendingMachine.nickels, vendingMachine.dimes, vendingMachine.quarters = [4, 4, 3]
 
         it "should display requirement for exact change only when coin bins are low" do
             expect(STDOUT).to receive(:puts).with("EXACT CHANGE ONLY")
             vendingMachine.display
         end
+    end
 
+    context "when able to make change" do
+        vendingMachine = VendingMachine.new
 
+        it "should display request to insert coin when it is able to make change" do
+            expect(STDOUT).to receive(:puts).with("INSERT COIN")
+            vendingMachine.display
+        end
+
+        it "should display the current amount entered once money has been inserted" do
+            ["quarter", "quarter", "quarter", "dime"].each do |coin|
+                vendingMachine.insert(coin)
+                $stdout.reopen('/dev/null', 'w')
+            end
+            expect(STDOUT).to receive(:puts).with("CURRENT AMOUNT: 0.85")
+            vendingMachine.display
+        end
 
     end
 
