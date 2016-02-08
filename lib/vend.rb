@@ -59,9 +59,6 @@ class VendingMachine
     def select product
         # Takes input and converts to upcase for consistency (again, just to conform to other specified output)
         product = product.upcase
-        # Boolean to simplify processing; allows for single "output product and change" block when conditions
-        # for individual items must be processed separately.
-        dispense = false
         # Diff to calculate leftovers if customer adds more money than needed.
         diff = 0
         if ["COLA", "CHIPS", "CANDY"].include? product
@@ -79,10 +76,37 @@ class VendingMachine
                 if self.current_amount >= item[:cost]
                     # Store the amount of overage, if any
                     diff = self.current_amount - item[:cost]
-                    # Approve the transaction for later
-                    dispense = true
                     # Update the specific product count
                     item[:count] -= 1
+                    output = {product: product, change: []}
+                    puts "THANK YOU"
+                    self.valid_coins.each do |coin|
+                        if coin == "NICKEL"
+                            self.nickels += 1
+                        elsif coin == "DIME"
+                            self.dimes += 1
+                        elsif coin == "QUARTER"
+                            self.quarters += 1
+                        end
+                    end
+                    self.valid_coins = []
+                    self.current_amount = 0
+                    while diff >= 25 && self.quarters > 0
+                        diff -= 25
+                        self.quarters -= 1
+                        output[:change].push "QUARTER"
+                    end
+                    while diff >= 10 && self.dimes > 0
+                        diff -= 10
+                        self.dimes -= 1
+                        output[:change].push "DIME"
+                    end
+                    while diff >= 5 && self.nickels > 0
+                        diff -= 5
+                        self.nickels -= 1
+                        output[:change].push "NICKEL"
+                    end
+                    return output
                 else
                     # Let them know they've come up short
                     puts "PRICE: #{"%.2f" % (item[:cost] / 100.0)}"
@@ -90,37 +114,6 @@ class VendingMachine
             else
                 # Skip all that if the product isn't available
                 puts "SOLD OUT"
-            end
-            if dispense
-                output = {product: product, change: []}
-                puts "THANK YOU"
-                self.valid_coins.each do |coin|
-                    if coin == "NICKEL"
-                        self.nickels += 1
-                    elsif coin == "DIME"
-                        self.dimes += 1
-                    elsif coin == "QUARTER"
-                        self.quarters += 1
-                    end
-                end
-                self.valid_coins = []
-                self.current_amount = 0
-                while diff >= 25 && self.quarters > 0
-                    diff -= 25
-                    self.quarters -= 1
-                    output[:change].push "QUARTER"
-                end
-                while diff >= 10 && self.dimes > 0
-                    diff -= 10
-                    self.dimes -= 1
-                    output[:change].push "DIME"
-                end
-                while diff >= 5 && self.nickels > 0
-                    diff -= 5
-                    self.nickels -= 1
-                    output[:change].push "NICKEL"
-                end
-                return output
             end
         else
             puts "INVALID SELECTION"
