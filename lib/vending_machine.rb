@@ -2,9 +2,10 @@
 # and dispenses cola, chips, and candy. More specific behaviors as described below.
 
 class VendingMachine
+    attr_accessor :current_amount
 
     def check_display
-        
+        puts 'INSERT COIN'
     end
 
 

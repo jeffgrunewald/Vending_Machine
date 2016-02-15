@@ -8,4 +8,9 @@ describe 'Vending Machine' do
         is_expected.to respond_to :check_display
     end
 
+    it 'should display "INSERT COIN" when current amount is zero' do
+        expect(STDOUT).to receive(:puts).with('INSERT COIN')
+        vendingMachine.check_display
+    end
+
 end
