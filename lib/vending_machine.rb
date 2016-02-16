@@ -24,6 +24,7 @@ class VendingMachine
     end
 
     def accept_coin coin
+        # Pass inserted coin to validator function.
         case validate coin
         when 1
             @current_amount += 5
@@ -32,10 +33,15 @@ class VendingMachine
         when 3
             @current_amount += 25
         when 0
+            # Validator handles edge cases, so no "else". Returns invalid coins immediately.
             return coin
         end
         @current_coins.push coin
         check_display
+    end
+
+    def return_coins
+        
     end
 
     def service
