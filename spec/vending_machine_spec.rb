@@ -1,6 +1,7 @@
 require 'rspec'
 require_relative '../lib/vending_machine'
 require_relative '../lib/coins'
+require_relative '../lib/products'
 
 describe 'Vending Machine' do
     subject(:vendingMachine) {VendingMachine.new}

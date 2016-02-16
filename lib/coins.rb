@@ -1,3 +1,5 @@
+# Class definitions for valid coin types with attributes for determining value
+
 class Nickel
     attr_reader :weight, :diameter
 
