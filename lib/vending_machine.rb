@@ -23,12 +23,22 @@ class VendingMachine
     end
 
     def accept_coin coin
-
+        if coin.weight == 5 && coin.diameter == 4
+            @current_amount += 5
+        elsif coin.weight == 3 && coin.diameter == 2
+            @current_amount += 10
+        elsif coin.weight == 7 && coin.diameter == 6
+            @current_amount += 25
+        end
+        check_display
     end
 
     def service
+        # Partially implemented to fill the machine since no accessors means no direct access to internal
+        # coin bins or product stores.
         @current_amount = 0
         @current_coins = []
+        # Fill all levels to specific maximums (40 nickels, 20 dimes, 8 quarters and 20 of each product).
         n_fill, d_fill, q_fill, p_fill = (40 - @nickels.length), (20 - @dimes.length), (8 - @quarters.length)
         cola_fill, chips_fill, candy_fill = (20 - @cola.length), (20 - @chips.length), (20 - @candy.length)
         (1..n_fill).each {@nickels.push Nickel.new}

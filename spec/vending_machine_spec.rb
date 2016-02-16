@@ -26,6 +26,7 @@ describe 'Vending Machine' do
     end
 
     it 'should display "0.25" when a single quarter is inserted' do
+        vendingMachine.service
         expect(STDOUT).to receive(:puts).with('0.25')
         vendingMachine.accept_coin Quarter.new
     end
