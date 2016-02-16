@@ -19,7 +19,7 @@ class VendingMachine
                 puts 'EXACT CHANGE ONLY'
             else
                 puts 'INSERT COIN'
-            end
+             end
         end
     end
 
@@ -44,7 +44,12 @@ class VendingMachine
         @current_amount = 0
         output = @current_coins
         @current_coins = []
+        check_display
         return output
+    end
+
+    def select_product product
+
     end
 
     def service

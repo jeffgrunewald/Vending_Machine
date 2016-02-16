@@ -26,23 +26,19 @@ describe 'Vending Machine' do
     end
 
     it 'should display "0.25" when a single quarter is inserted' do
-        quarter = Quarter.new
         expect(STDOUT).to receive(:puts).with('0.25')
-        vendingMachine.accept_coin quarter
+        vendingMachine.accept_coin Quarter.new
     end
 
     it 'should display "0.25" and "0.35" when a dime is inserted after a quarter' do
-        quarter = Quarter.new
-        dime = Dime.new
         expect(STDOUT).to receive(:puts).with('0.25')
-        vendingMachine.accept_coin quarter
+        vendingMachine.accept_coin Quarter.new
         expect(STDOUT).to receive(:puts).with('0.35')
-        vendingMachine.accept_coin dime
+        vendingMachine.accept_coin Dime.new
     end
 
     it 'should return invalid coins' do
-        invalid_coin = :anything_else
-        expect(vendingMachine.accept_coin invalid_coin).to eq invalid_coin
+        expect(vendingMachine.accept_coin :anything_else).to eq :anything_else
     end
 
     it 'should have a method for customers to request return of their coins' do
@@ -50,13 +46,17 @@ describe 'Vending Machine' do
     end
 
     it 'should output [Dime, Dime] when two dimes are inserted and then returned' do
-        dime1 = Dime.new
-        dime2 = Dime.new
-        vendingMachine.accept_coin dime1
-        vendingMachine.accept_coin dime2
+        vendingMachine.service
+        vendingMachine.accept_coin Dime.new
+        vendingMachine.accept_coin Dime.new
+        expect(STDOUT).to receive(:puts).with('INSERT COIN')
         output = vendingMachine.return_coins
         expect(output[0].instance_of? Dime).to eq true
         expect(output[1].instance_of? Dime).to eq true
+    end
+
+    it 'should have a method for selecting products' do
+        is_expected.to respond_to :select_product
     end
 
 end
