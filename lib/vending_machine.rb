@@ -41,7 +41,10 @@ class VendingMachine
     end
 
     def return_coins
-        
+        @current_amount = 0
+        output = @current_coins
+        @current_coins = []
+        return output
     end
 
     def service

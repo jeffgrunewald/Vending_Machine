@@ -56,7 +56,7 @@ describe 'Vending Machine' do
         vendingMachine.accept_coin dime2
         output = vendingMachine.return_coins
         expect(output[0].instance_of? Dime).to eq true
-        expedt(output[1].instance_of? Dime).to eq true
+        expect(output[1].instance_of? Dime).to eq true
     end
 
 end
