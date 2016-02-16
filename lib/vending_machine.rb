@@ -2,6 +2,7 @@
 # and dispenses cola, chips, and candy. More specific behaviors as described below.
 require_relative './coins'
 require_relative './products'
+require_relative './coin_validator'
 
 class VendingMachine
 
@@ -23,13 +24,17 @@ class VendingMachine
     end
 
     def accept_coin coin
-        if coin.weight == 5 && coin.diameter == 4
+        case validate coin
+        when 1
             @current_amount += 5
-        elsif coin.weight == 3 && coin.diameter == 2
+        when 2
             @current_amount += 10
-        elsif coin.weight == 7 && coin.diameter == 6
+        when 3
             @current_amount += 25
+        when 0
+            return coin
         end
+        @current_coins.push coin
         check_display
     end
 
