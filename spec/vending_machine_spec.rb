@@ -13,4 +13,9 @@ describe 'Vending Machine' do
         vendingMachine.check_display
     end
 
+    it 'should display "EXACT CHANGE ONLY" when coin are low' do
+        expect(STDOUT).to receive(:puts).with('EXACT CHANGE ONLY')
+        vendingMachine.check_display
+    end
+
 end
