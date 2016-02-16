@@ -1,5 +1,6 @@
 # Implement the logic of a vending machine that accepts nickels, dimes, and quarters
 # and dispenses cola, chips, and candy. More specific behaviors as described below.
+require_relative './coins'
 
 class VendingMachine
 
@@ -25,5 +26,20 @@ class VendingMachine
             end
         end
     end
+
+    def service
+        @current_amount = 0
+        @current_coins = []
+        (1..40).each do
+            @nickels.push Nickel.new
+        end
+        (1..20).each do
+            @dimes.push Dime.new
+        end
+        (1..8).each do
+            @quarters.push Quarter.new
+        end
+    end
+
 
 end

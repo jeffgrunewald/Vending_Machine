@@ -1,5 +1,6 @@
 require 'rspec'
 require_relative '../lib/vending_machine'
+require_relative '../lib/coins'
 
 describe 'Vending Machine' do
     subject(:vendingMachine) {VendingMachine.new}
@@ -9,11 +10,12 @@ describe 'Vending Machine' do
     end
 
     it 'should display "INSERT COIN" when current amount is zero' do
+        vendingMachine.service
         expect(STDOUT).to receive(:puts).with('INSERT COIN')
         vendingMachine.check_display
     end
 
-    it 'should display "EXACT CHANGE ONLY" when coin are low' do
+    it 'should display "EXACT CHANGE ONLY" when coins are low' do
         expect(STDOUT).to receive(:puts).with('EXACT CHANGE ONLY')
         vendingMachine.check_display
     end
