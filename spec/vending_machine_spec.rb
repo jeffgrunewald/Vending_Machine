@@ -20,4 +20,13 @@ describe 'Vending Machine' do
         vendingMachine.check_display
     end
 
+    it 'should have a method for customers to insert coins' do
+        is_expected.to respond_to :accept_coin
+    end
+
+    it 'should display "0.25" when a single quarter is inserted' do
+        expect(STDOUT).to receive(:puts).with('0.25')
+        vendingMachine.accept_coin Quarter.new
+    end
+
 end

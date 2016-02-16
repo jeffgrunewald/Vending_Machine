@@ -17,7 +17,7 @@ class VendingMachine
 
     def check_display
         if @current_amount > 0
-            puts ("CURRENT AMOUNT: #{'%.2f' % (@current_amount / 100.0)}")
+            puts ("#{'%.2f' % (@current_amount / 100.0)}")
         else
             if @nickels.length <= 4 && @dimes.length <= 4 && @quarters.length <= 3
                 puts 'EXACT CHANGE ONLY'
@@ -25,6 +25,10 @@ class VendingMachine
                 puts 'INSERT COIN'
             end
         end
+    end
+
+    def accept_coin coin
+
     end
 
     def service
