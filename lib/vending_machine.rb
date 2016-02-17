@@ -79,6 +79,8 @@ class VendingMachine
                     @current_amount = 0
                     puts 'THANK YOU'
                     return output
+                else
+                        puts "PRICE: #{'%.2f' % (item[:price] / 100.0)}"
                 end
             else
                 puts 'SOLD OUT'

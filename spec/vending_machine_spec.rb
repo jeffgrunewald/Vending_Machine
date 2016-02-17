@@ -86,4 +86,10 @@ describe 'Vending Machine' do
         vendingMachine.select_product 'cola'
     end
 
+    it 'should display "PRICE: 0.65" when candy is selected and current amount is not enough' do
+        vendingMachine.service
+        expect(STDOUT).to receive(:puts).with('PRICE: 0.65')
+        vendingMachine.select_product 'candy'
+    end
+
 end
