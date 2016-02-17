@@ -94,4 +94,14 @@ describe 'Vending Machine' do
         vendingMachine.select_product 'candy'
     end
 
+    it 'should output {product: Candy, change: [Dime]} when three quarters are added and candy is selected' do
+        vendingMachine.service
+        vendingMachine.accept_coin Quarter.new
+        vendingMachine.accept_coin Quarter.new
+        vendingMachine.accept_coin Quarter.new
+        output = vendingMachine.select_product 'candy'
+        expect(output[:change].length).to eq 1
+        expect(output[:change][0].instance_of? Dime).to eq true
+    end
+
 end

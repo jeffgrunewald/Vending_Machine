@@ -52,6 +52,8 @@ class VendingMachine
     end
 
     def select_product product
+        product = product.downcase
+        diff = 0
         if ['cola', 'chips', 'candy'].include? product
             case product
             when 'cola'
@@ -63,7 +65,8 @@ class VendingMachine
             end
             if item[:stock].length > 0
                 if @current_amount >= item[:price]
-                    output = {}
+                    diff = @current_amount - item[:price]
+                    output = {change: []}
                     output[:product] = item[:stock].pop
                     @current_coins.each do |coin|
                         case coin
@@ -77,6 +80,18 @@ class VendingMachine
                     end
                     @current_coins = []
                     @current_amount = 0
+                    while diff >= 25 && @quarters.length > 0
+                        diff -= 25
+                        output[:change].push(@quarters.pop)
+                    end
+                    while diff >= 10 && @dimes.length > 0
+                        diff -= 10
+                        output[:change].push(@dimes.pop)
+                    end
+                    while diff >= 5 && @nickels.length > 0
+                        diff -= 5
+                        output[:change].push(@nickels.pop)
+                    end
                     puts 'THANK YOU'
                     return output
                 else
