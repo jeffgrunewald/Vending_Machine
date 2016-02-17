@@ -81,8 +81,10 @@ describe 'Vending Machine' do
         vendingMachine.select_product 'chips'
     end
 
-    it 'should display "SOLD OUT" when a product is selected that is unavailable' do
+    it 'should display "SOLD OUT" followed by "0.10" when a dime is inserted and a missing product is selected' do
+        vendingMachine.accept_coin Dime.new
         expect(STDOUT).to receive(:puts).with('SOLD OUT')
+        expect(STDOUT).to receive(:puts).with('0.10')
         vendingMachine.select_product 'cola'
     end
 

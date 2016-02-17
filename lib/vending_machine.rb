@@ -84,6 +84,7 @@ class VendingMachine
                 end
             else
                 puts 'SOLD OUT'
+                check_display
             end
         else
             puts 'INVALID SELECTION'
