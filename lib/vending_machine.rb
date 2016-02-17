@@ -3,6 +3,7 @@
 require_relative './coins'
 require_relative './products'
 require_relative './coin_validator'
+require_relative './calculate_change'
 
 class VendingMachine
 
@@ -16,13 +17,13 @@ class VendingMachine
 
     def check_display
         if @current_amount > 0
-            puts ("#{'%.2f' % (@current_amount / 100.0)}")
+            puts "#{'%.2f' % (@current_amount / 100.0)}"
         else
             if @nickels.length <= 4 && @dimes.length <= 4 && @quarters.length <= 3
                 puts 'EXACT CHANGE ONLY'
             else
                 puts 'INSERT COIN'
-             end
+            end
         end
     end
 
@@ -69,7 +70,7 @@ class VendingMachine
                     output = {change: []}
                     output[:product] = item[:stock].pop
                     @current_coins.each do |coin|
-                        case coin
+                        case validate coin
                         when 1
                             @nickels.push coin
                         when 2
@@ -80,22 +81,16 @@ class VendingMachine
                     end
                     @current_coins = []
                     @current_amount = 0
-                    while diff >= 25 && @quarters.length > 0
-                        diff -= 25
-                        output[:change].push(@quarters.pop)
-                    end
-                    while diff >= 10 && @dimes.length > 0
-                        diff -= 10
-                        output[:change].push(@dimes.pop)
-                    end
-                    while diff >= 5 && @nickels.length > 0
-                        diff -= 5
-                        output[:change].push(@nickels.pop)
-                    end
+
+                    change = calc_change diff, @nickels.length, @dimes.length, @quarters.length
+                    (1..change[:quarters]).each {output[:change].push(@quarters.pop)}
+                    (1..change[:dimes]).each {output[:change].push(@dimes.pop)}
+                    (1..change[:nickels]).each {output[:change].push(@nickels.pop)}
+
                     puts 'THANK YOU'
                     return output
                 else
-                        puts "PRICE: #{'%.2f' % (item[:price] / 100.0)}"
+                    puts "PRICE: #{'%.2f' % (item[:price] / 100.0)}"
                 end
             else
                 puts 'SOLD OUT'
@@ -107,8 +102,7 @@ class VendingMachine
     end
 
     def service
-        # Partially implemented to fill the machine since no accessors means no direct access to internal
-        # coin bins or product stores.
+        # Implemented to fill machine since no accessors means no direct access to internal coin or product stores.
         @current_amount = 0
         @current_coins = []
         # Fill all levels to specific maximums (40 nickels, 20 dimes, 8 quarters and 20 of each product).
@@ -121,6 +115,5 @@ class VendingMachine
         (1..chips_fill).each {@chips[:stock].push Chips.new}
         (1..candy_fill).each {@candy[:stock].push Candy.new}
     end
-
 
 end
