@@ -54,32 +54,37 @@ class VendingMachine
     def select_product product
         if ['cola', 'chips', 'candy'].include? product
             case product
-            when "cola"
+            when 'cola'
                 item = @cola
-            when "chips"
+            when 'chips'
                 item = @chips
-            when "candy"
+            when 'candy'
                 item = @candy
             end
-            if @current_amount >= item[:price]
-                output = {}
-                output[:product] = item[:stock].pop
-                @current_coins.each do |coin|
-                    case coin
-                    when 1
-                        @nickels.push coin
-                    when 2
-                        @dimes.push coin
-                    when 3
-                        @quarters.push coin
+            if item[:stock].length > 0
+                if @current_amount >= item[:price]
+                    output = {}
+                    output[:product] = item[:stock].pop
+                    @current_coins.each do |coin|
+                        case coin
+                        when 1
+                            @nickels.push coin
+                        when 2
+                            @dimes.push coin
+                        when 3
+                            @quarters.push coin
+                        end
                     end
+                    @current_coins = []
+                    @current_amount = 0
+                    puts 'THANK YOU'
+                    return output
                 end
-                @current_coins = []
-                @current_amount = 0
-                return output
+            else
+                puts 'SOLD OUT'
             end
         else
-            puts "INVALID SELECTION"
+            puts 'INVALID SELECTION'
         end
     end
 

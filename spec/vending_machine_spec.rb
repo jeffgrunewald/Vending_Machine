@@ -69,8 +69,21 @@ describe 'Vending Machine' do
         vendingMachine.service
         vendingMachine.accept_coin Quarter.new
         vendingMachine.accept_coin Quarter.new
-        output = vendingMachine.select_product "chips"
-        expect(output[:product].instance_of? Chips).to eq true        
+        output = vendingMachine.select_product 'chips'
+        expect(output[:product].instance_of? Chips).to eq true
+    end
+
+    it 'should display "THANK YOU" when a purchase is completed' do
+        vendingMachine.service
+        vendingMachine.accept_coin Quarter.new
+        vendingMachine.accept_coin Quarter.new
+        expect(STDOUT).to receive(:puts).with('THANK YOU')
+        vendingMachine.select_product 'chips'
+    end
+
+    it 'should display "SOLD OUT" when a product is selected that is unavailable' do
+        expect(STDOUT).to receive(:puts).with('SOLD OUT')
+        vendingMachine.select_product 'cola'
     end
 
 end
