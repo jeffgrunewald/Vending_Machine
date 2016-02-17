@@ -49,14 +49,28 @@ describe 'Vending Machine' do
         vendingMachine.service
         vendingMachine.accept_coin Dime.new
         vendingMachine.accept_coin Dime.new
-        expect(STDOUT).to receive(:puts).with('INSERT COIN')
         output = vendingMachine.return_coins
         expect(output[0].instance_of? Dime).to eq true
         expect(output[1].instance_of? Dime).to eq true
     end
 
+    it 'should display "INSERT COIN" when inserted coins are returned' do
+        vendingMachine.service
+        vendingMachine.accept_coin Nickel.new
+        expect(STDOUT).to receive(:puts).with('INSERT COIN')
+        vendingMachine.return_coins
+    end
+
     it 'should have a method for selecting products' do
         is_expected.to respond_to :select_product
+    end
+
+    it 'should output {product: Chips} when current amount is 0.50 and "chips" is selected' do
+        vendingMachine.service
+        vendingMachine.accept_coin Quarter.new
+        vendingMachine.accept_coin Quarter.new
+        output = vendingMachine.select_product "chips"
+        expect(output[:product].instance_of? Chips).to eq true        
     end
 
 end
